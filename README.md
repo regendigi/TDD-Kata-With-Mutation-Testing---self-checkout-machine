@@ -34,14 +34,6 @@ The machine will accept any number of gift card(s). The customer shall be able t
 The machine should also validate the expiration date of the card.
 A gift card can only be used once.
 
-Option for Payment Method
--------------------------
-_As a customer_
-_I want to be able to choose whether to pay by cash or credit card_
-_So that I can use the most convenient payment method for me_
-
-The customer shall be able to select a payment method.
-
 
 Accept Payment by Cash
 ----------------------
@@ -61,8 +53,14 @@ _I want to be able to pay by using credit card_
 
 The customer can entered their credit card number, and the machine will use third party service to validate the card. If valid, checkout should ended afterward.
 
+
+Gift Card Can Be Used Again If Previous Transaction Is Cancelled
+----------------------------------------------------------------
+_As a customer_
+_I want to cancel use my transaction using gift card_
+_So that I can use my gift card for next transaction_
+
 Bonus
 =====
 - Print receipt
 - Add mutation test coverage for the classes in the util package
-- If transaction is cancelled, the gift card should still can be use for the next transaction

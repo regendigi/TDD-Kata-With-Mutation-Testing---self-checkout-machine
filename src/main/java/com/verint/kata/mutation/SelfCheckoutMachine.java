@@ -18,14 +18,9 @@ public class SelfCheckoutMachine {
 	private Double cashTotal = 0D;
 	private Double change = 0D;
 	private boolean checkoutCompleted = false;
-	private Double giftCardValue = 0D;
 
 	private Map<String, GiftCard> availableGiftCardMap = new HashMap<String, GiftCard>();
 	private ICreditCardValidator ccValidator;
-
-	public SelfCheckoutMachine() {
-		// Need to do something here?
-	}
 
 	public Double scanProduct(String id) {
 		Product product = StoreBuilder.getProductMap().get(id);
@@ -44,7 +39,8 @@ public class SelfCheckoutMachine {
 		Boolean expired = giftCard.isExpired();
 		if (giftCard != null && !used && !expired) {
 			availableGiftCardMap.put(code, giftCard);
-			giftCardValue += giftCard.getValue();
+			currentTotal -= giftCard.getValue();
+			currentTotal = Math.max(Double.valueOf(0), currentTotal);
 			return GiftCard.GIFT_CARD_STATE.ACCEPTABLE;
 		} else if (expired) {
 			return GiftCard.GIFT_CARD_STATE.EXPIRED;
@@ -74,10 +70,7 @@ public class SelfCheckoutMachine {
 	}
 
 	public Double getCurrentTotal() {
-		if (giftCardValue > currentTotal) {
-			giftCardValue = currentTotal;
-		}
-		return currentTotal - giftCardValue;
+		return currentTotal;
 	}
 
 	public Double getChange() {
@@ -88,15 +81,11 @@ public class SelfCheckoutMachine {
 		return checkoutCompleted;
 	}
 
-	public Double getGiftCardValue() {
-		return giftCardValue;
-	}
-
 	public Double getCashTotal() {
 		return cashTotal;
 	}
-	
-	public void setValidatorClass(ICreditCardValidator classValidator){
+
+	public void setValidatorClass(ICreditCardValidator classValidator) {
 		this.ccValidator = classValidator;
 	}
 

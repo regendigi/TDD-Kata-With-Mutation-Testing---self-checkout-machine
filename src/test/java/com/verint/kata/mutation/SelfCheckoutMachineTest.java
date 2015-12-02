@@ -68,12 +68,6 @@ public class SelfCheckoutMachineTest {
 				machine.addGiftCard("987ZYX"));
 	}
 
-	@Test
-	public void testGiftCardValue() {
-		machine.addGiftCard("987ZYX");
-		assertEquals(Double.valueOf(10000), machine.getGiftCardValue());
-	}
-
 	/*
 	 * Test the effects of using gift cards to total purchase
 	 */
@@ -92,7 +86,6 @@ public class SelfCheckoutMachineTest {
 		machine.scanProduct("ABC0001");
 		assertEquals(Double.valueOf(5000), machine.getCurrentTotal());
 		machine.addGiftCard("987ZYX");
-		assertEquals(Double.valueOf(10000), machine.getGiftCardValue());
 		assertEquals(Double.valueOf(0), machine.getCurrentTotal());
 		assertEquals(Double.valueOf(0), machine.getChange());
 	}
@@ -100,6 +93,7 @@ public class SelfCheckoutMachineTest {
 	@Test
 	public void testIfTotalValueOfTheGiftCardIsEqualsTotalPurchase() {
 		machine.scanProduct("DEF0003");
+		assertEquals(Double.valueOf(10000), machine.getCurrentTotal());
 		machine.addGiftCard("987ZYX");
 		assertEquals(Double.valueOf(0), machine.getCurrentTotal());
 	}
