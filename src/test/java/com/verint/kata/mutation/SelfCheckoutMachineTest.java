@@ -96,6 +96,7 @@ public class SelfCheckoutMachineTest {
 		assertEquals(Double.valueOf(10000), machine.getCurrentTotal());
 		machine.addGiftCard("987ZYX");
 		assertEquals(Double.valueOf(0), machine.getCurrentTotal());
+		assertEquals(Double.valueOf(0), machine.getChange());
 	}
 
 	/*
@@ -106,6 +107,7 @@ public class SelfCheckoutMachineTest {
 		machine.scanProduct("DEF0001");
 		machine.scanProduct("DEF0002");
 		machine.scanProduct("DEF0003");
+		assertEquals(Double.valueOf(22500), machine.getCurrentTotal());
 		machine.payWithCash(Double.valueOf(22500));
 		assertTrue(machine.isCheckoutCompleted());
 		assertEquals(Double.valueOf(0), machine.getChange());
@@ -114,6 +116,7 @@ public class SelfCheckoutMachineTest {
 	@Test
 	public void testIfCashTotalIsAlreadyEnoughForPurchaseItShouldNotAcceptAnymoreCash() {
 		machine.scanProduct("DEF0003");
+		assertEquals(Double.valueOf(10000), machine.getCurrentTotal());
 		machine.payWithCash(Double.valueOf(5000));
 		machine.payWithCash(Double.valueOf(5000));
 		machine.payWithCash(Double.valueOf(5000));
@@ -162,6 +165,22 @@ public class SelfCheckoutMachineTest {
 		machine.scanProduct("GHI0002");
 		machine.payWithCreditCard("0987654321");
 		assertFalse(machine.isCheckoutCompleted());
+	}
+	
+	/*
+	 * Test cancel transaction
+	 */
+	
+	@Test
+	public void testCancelTransactionShouldBeAbleToUseGiftCard(){
+		machine.scanProduct("ABC0001");
+		machine.scanProduct("ABC0002");
+		assertEquals(Double.valueOf(11000), machine.getCurrentTotal());
+		assertEquals(GiftCard.GIFT_CARD_STATE.ACCEPTABLE, machine.addGiftCard("987ZYX"));
+		assertEquals(Double.valueOf(Double.valueOf(1000)), machine.getCurrentTotal());
+		machine.cancelTransaction();
+		assertEquals(Double.valueOf(0), machine.getCurrentTotal());
+		assertEquals(GiftCard.GIFT_CARD_STATE.ACCEPTABLE, machine.addGiftCard("987ZYX"));
 	}
 
 }
